@@ -1,3 +1,6 @@
+import sys
+import sqlite3
+
 from prompt_toolkit import CommandLineInterface, AbortAction, Exit
 from prompt_toolkit.layout import Layout
 from prompt_toolkit.line import Line
@@ -7,14 +10,8 @@ from prompt_toolkit.completion import Completion, Completer
 from pygments.lexers.sql import SqlLexer
 
 class SqlCompleter(Completer):
-    keywords = [
-        'select',
-        'insert',
-        'drop',
-        'delete',
-        'from',
-        'where',
-    ]
+    keywords = ['create', 'select', 'insert', 'drop',
+                'delete', 'from', 'where', 'table']
 
     def complete_after_insert_text(self, document):
         """
@@ -30,16 +27,26 @@ class SqlCompleter(Completer):
             if keyword.startswith(word_before_cursor):
                 yield Completion(keyword, -len(word_before_cursor))
 
-def main():
-    layout = Layout(before_input=DefaultPrompt('> '), lexer=SqlLexer, menus=[CompletionMenu()])
+def main(database):
+    connection = sqlite3.connect(database)
+    layout = Layout(before_input=DefaultPrompt('> '),
+                    lexer=SqlLexer, menus=[CompletionMenu()])
     line = Line(completer=SqlCompleter())
     cli = CommandLineInterface(layout=layout, line=line)
     try:
         while True:
             code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
-            print 'You entered:', code_obj.text
+            with connection:
+                messages = connection.execute(code_obj.text)
+                for message in messages:
+                    print message
     except Exit:
-        print 'GoodBye!'
+         print 'GoodBye!'
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) < 2:
+        db = ':memory:'
+    else:
+        db = sys.argv[1]
+
+    main(db)
