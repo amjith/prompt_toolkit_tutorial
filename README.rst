@@ -49,7 +49,8 @@ Let's get started!
        cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION) print 'You
        entered:', code_obj.text except Exit: print 'GoodBye!'
    
-       if __name__ == '__main__': main()
+       if __name__ == '__main__': 
+           main()
    
 
 #. Syntax Highlighting
