@@ -27,8 +27,8 @@ Let's get started!
  
        def main():
            cli = CommandLineInterface()
-           code_obj = cli.read_input()
-           print 'You entered:', code_obj.text
+           document = cli.read_input()
+           print 'You entered:', document.text
  
        if __name__ == '__main__':
            main()
@@ -49,8 +49,8 @@ Let's get started!
            cli = CommandLineInterface() 
            try: 
                while True: 
-                   code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION) 
-                   print 'You entered:', code_obj.text 
+                   document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION) 
+                   print 'You entered:', document.text 
            except Exit: 
                print 'GoodBye!'
    
@@ -77,8 +77,8 @@ Let's get started!
            cli = CommandLineInterface(layout=layout)
            try:
                while True:
-                   code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
-                   print 'You entered:', code_obj.text
+                   document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
+                   print 'You entered:', document.text
            except Exit:
                print 'GoodBye!'
    
@@ -90,14 +90,11 @@ Let's get started!
    
    Create a class called ``SqlCompleter`` that is derived from
    ``prompt_toolkit.Completer``. Define a set of ``keywords`` for
-   auto-completion. Override the methods ``complete_after_insert_text`` and
-   ``get_completions``.  The first method ``complete_after_insert_text``
-   determines whether you want auto-completion to trigger as soon as you start
-   typing or only when you hit <tab>. The second method ``get_completions`` is
-   used to populate the completion menu with possible candidates from the list
+   auto-completion. Override the `get_completions`` method to 
+   populate the completion menu with possible candidates from the list
    of ``keywords``.
 
-   This ``SqlCompleter`` class will be used by ``prompt_toolkit.Line`` class
+   This ``SqlCompleter`` class will be passed into the ``prompt_toolkit.Line`` class
    which controls the cusor position and completion of a line. 
 
    .. code:: python
@@ -114,13 +111,6 @@ Let's get started!
            keywords = ['create', 'select', 'insert', 'drop', 
                        'delete', 'from', 'where', 'table']
 
-           def complete_after_insert_text(self, document):
-               """
-               Open completion menu when we type a character.
-               (Except if we typed whitespace.)
-               """
-               return not document.char_before_cursor.isspace()
-
            def get_completions(self, document):
                word_before_cursor = document.get_word_before_cursor()
 
@@ -135,8 +125,59 @@ Let's get started!
            cli = CommandLineInterface(layout=layout, line=line)
            try:
                while True:
-                   code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
-                   print 'You entered:', code_obj.text
+                   document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
+                   print 'You entered:', document.text
+           except Exit:
+               print 'GoodBye!'
+   
+       if __name__ == '__main__':
+           main()
+
+#. Styling the menus
+
+   To add custom colors to the menus, create a class named ``DocumentStyle``
+   and sub-class it from ``pygments.style``. Customize the colors for the
+   completion menu. Finally pass in the style as a parameter to the
+   ``CommandLineInterface`` constructor.
+
+   .. code:: python
+
+       from prompt_toolkit import CommandLineInterface, AbortAction, Exit
+       from prompt_toolkit.layout import Layout
+       from prompt_toolkit.line import Line
+       from prompt_toolkit.layout.prompt import DefaultPrompt
+       from prompt_toolkit.layout.menus import CompletionMenu
+       from prompt_toolkit.completion import Completion, Completer
+       from pygments.lexers.sql import SqlLexer
+
+       class SqlCompleter(Completer):
+           keywords = ['create', 'select', 'insert', 'drop', 
+                       'delete', 'from', 'where', 'table']
+
+           def get_completions(self, document):
+               word_before_cursor = document.get_word_before_cursor()
+
+               for keyword in self.keywords:
+                   if keyword.startswith(word_before_cursor):
+                       yield Completion(keyword, -len(word_before_cursor))
+
+       class DocumentStyle(Style):
+           styles = {
+               Token.CompletionMenu.Completion.Current: 'bg:#00aaaa #000000',
+               Token.CompletionMenu.Completion: 'bg:#008888 #ffffff',
+               Token.CompletionMenu.ProgressButton: 'bg:#003333',
+               Token.CompletionMenu.ProgressBar: 'bg:#00aaaa',
+           }
+   
+       def main():
+           layout = Layout(before_input=DefaultPrompt('> '), 
+                           lexer=SqlLexer, menus=[CompletionMenu()])
+           line = Line(completer=SqlCompleter())
+           cli = CommandLineInterface(style=DocumentStyle, layout=layout, line=line)
+           try:
+               while True:
+                   document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
+                   print 'You entered:', document.text
            except Exit:
                print 'GoodBye!'
    
@@ -169,19 +210,20 @@ Let's get started!
            keywords = ['create', 'select', 'insert', 'drop', 
                        'delete', 'from', 'where', 'table']
 
-           def complete_after_insert_text(self, document):
-               """
-               Open completion menu when we type a character.
-               (Except if we typed whitespace.)
-               """
-               return not document.char_before_cursor.isspace()
-
            def get_completions(self, document):
                word_before_cursor = document.get_word_before_cursor()
 
                for keyword in self.keywords:
                    if keyword.startswith(word_before_cursor):
                        yield Completion(keyword, -len(word_before_cursor))
+
+       class DocumentStyle(Style):
+           styles = {
+               Token.CompletionMenu.Completion.Current: 'bg:#00aaaa #000000',
+               Token.CompletionMenu.Completion: 'bg:#008888 #ffffff',
+               Token.CompletionMenu.ProgressButton: 'bg:#003333',
+               Token.CompletionMenu.ProgressBar: 'bg:#00aaaa',
+           }
    
        def main(database):
            connection = sqlite3.connect(database)
@@ -191,9 +233,9 @@ Let's get started!
            cli = CommandLineInterface(layout=layout, line=line)
            try:
                while True:
-                   code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
+                   document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
                    with connection:
-                       messages = connection.execute(code_obj.text)
+                       messages = connection.execute(document.text)
                        for message in messages:
                            print message
            except Exit:

@@ -8,17 +8,12 @@ from prompt_toolkit.layout.prompt import DefaultPrompt
 from prompt_toolkit.layout.menus import CompletionMenu
 from prompt_toolkit.completion import Completion, Completer
 from pygments.lexers.sql import SqlLexer
+from pygments.style import Style
+from pygments.token import Token
 
 class SqlCompleter(Completer):
     keywords = ['create', 'select', 'insert', 'drop',
                 'delete', 'from', 'where', 'table']
-
-    def complete_after_insert_text(self, document):
-        """
-        Open completion menu when we type a character.
-        (Except if we typed whitespace.)
-        """
-        return not document.char_before_cursor.isspace()
 
     def get_completions(self, document):
         word_before_cursor = document.get_word_before_cursor()
@@ -27,12 +22,20 @@ class SqlCompleter(Completer):
             if keyword.startswith(word_before_cursor):
                 yield Completion(keyword, -len(word_before_cursor))
 
+class DocumentStyle(Style):
+    styles = {
+        Token.CompletionMenu.Completion.Current: 'bg:#00aaaa #000000',
+        Token.CompletionMenu.Completion: 'bg:#008888 #ffffff',
+        Token.CompletionMenu.ProgressButton: 'bg:#003333',
+        Token.CompletionMenu.ProgressBar: 'bg:#00aaaa',
+    }
+
 def main(database):
     connection = sqlite3.connect(database)
     layout = Layout(before_input=DefaultPrompt('> '),
                     lexer=SqlLexer, menus=[CompletionMenu()])
     line = Line(completer=SqlCompleter())
-    cli = CommandLineInterface(layout=layout, line=line)
+    cli = CommandLineInterface(style=DocumentStyle, layout=layout, line=line)
     try:
         while True:
             code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
@@ -41,7 +44,7 @@ def main(database):
                 for message in messages:
                     print message
     except Exit:
-         print 'GoodBye!'
+        print 'GoodBye!'
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
