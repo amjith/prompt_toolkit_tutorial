@@ -247,7 +247,7 @@ Let's get started!
    
        if __name__ == '__main__':
            if len(sys.argv) < 2:
-              db = ':memory:'
+               db = ':memory:'
            else:
                db = sys.argv[1]
 

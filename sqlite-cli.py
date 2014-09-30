@@ -38,9 +38,9 @@ def main(database):
     cli = CommandLineInterface(style=DocumentStyle, layout=layout, line=line)
     try:
         while True:
-            code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
+            document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
             with connection:
-                messages = connection.execute(code_obj.text)
+                messages = connection.execute(document.text)
                 for message in messages:
                     print message
     except Exit:
