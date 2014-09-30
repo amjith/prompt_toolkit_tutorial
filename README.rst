@@ -51,8 +51,8 @@ Let's get started!
                while True: 
                    code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION) 
                    print 'You entered:', code_obj.text 
-            except Exit: 
-                print 'GoodBye!'
+           except Exit: 
+               print 'GoodBye!'
    
        if __name__ == '__main__': 
            main()
@@ -80,10 +80,10 @@ Let's get started!
                    code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
                    print 'You entered:', code_obj.text
            except Exit:
-                print 'GoodBye!'
+               print 'GoodBye!'
    
        if __name__ == '__main__':
-            main()
+           main()
 
 
 #. Auto-completion
@@ -138,10 +138,10 @@ Let's get started!
                    code_obj = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
                    print 'You entered:', code_obj.text
            except Exit:
-                print 'GoodBye!'
+               print 'GoodBye!'
    
        if __name__ == '__main__':
-            main()
+           main()
 
 
 #. Hook up Sqlite
@@ -197,13 +197,13 @@ Let's get started!
                        for message in messages:
                            print message
            except Exit:
-                print 'GoodBye!'
+               print 'GoodBye!'
    
        if __name__ == '__main__':
-            if len(sys.argv) < 2:
-               db = ':memory:'
-            else:
-                db = sys.argv[1]
+           if len(sys.argv) < 2:
+              db = ':memory:'
+           else:
+               db = sys.argv[1]
 
            main(db)
 
