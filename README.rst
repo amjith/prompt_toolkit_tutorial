@@ -234,7 +234,7 @@ Let's get started!
            layout = Layout(before_input=DefaultPrompt('> '), 
                            lexer=SqlLexer, menus=[CompletionMenu()])
            line = Line(completer=SqlCompleter())
-           cli = CommandLineInterface(layout=layout, line=line)
+           cli = CommandLineInterface(style=DocumentStyle, layout=layout, line=line)
            try:
                while True:
                    document = cli.read_input(on_exit=AbortAction.RAISE_EXCEPTION)
