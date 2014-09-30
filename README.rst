@@ -149,6 +149,8 @@ Let's get started!
        from prompt_toolkit.layout.menus import CompletionMenu
        from prompt_toolkit.completion import Completion, Completer
        from pygments.lexers.sql import SqlLexer
+       from pygments.style import Style
+       from pygments.token import Token
 
        class SqlCompleter(Completer):
            keywords = ['create', 'select', 'insert', 'drop', 
@@ -205,6 +207,8 @@ Let's get started!
        from prompt_toolkit.layout.menus import CompletionMenu
        from prompt_toolkit.completion import Completion, Completer
        from pygments.lexers.sql import SqlLexer
+       from pygments.style import Style
+       from pygments.token import Token
 
        class SqlCompleter(Completer):
            keywords = ['create', 'select', 'insert', 'drop', 
