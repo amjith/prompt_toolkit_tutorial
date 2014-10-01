@@ -1,5 +1,5 @@
 Build a REPL With Python Prompt Toolkit
-'''''''''''''''''''''''''''''''''''''''
+---------------------------------------
 
 The aim of this tutorial is to build an interactive command line interface for
 SQLite database using prompt_toolkit_.
@@ -18,28 +18,26 @@ Let's get started!
 
 #. Read User Input
 
-   Create an object of type ``CommandLineInterface`` from ``prompt_toolkit`` and
-   start accepting input using the ``read_input()`` method.
+   Create an object of type ``prompt_toolkit.CommandLineInterface`` and start
+   accepting input using the ``read_input()`` method. This is similar to the
+   python's ``raw_input()`` method.
  
    .. code:: python
  
        from prompt_toolkit import CommandLineInterface
  
-       def main():
-           cli = CommandLineInterface()
-           document = cli.read_input()
-           print 'You entered:', document.text
+       def main(): cli = CommandLineInterface() document = cli.read_input()
+       print 'You entered:', document.text
  
-       if __name__ == '__main__':
-           main()
+       if __name__ == '__main__': main()
 
 
 #. Loop The REPL
 
    The ``read_input`` method takes a kwarg called ``on_exit`` that dictates
-   what happens ``^D`` is pressed. ``AbortAction`` is a class that provides
+   what happens when ``^D`` is pressed. ``AbortAction`` is a class that provides
    various opitons and we've chosen to throw an exception called ``Exit``. This
-   exception is caught in the except clause and we quit the program.
+   exception is caught in the except clause to quit the program.
    
    .. code:: python
    
@@ -60,10 +58,13 @@ Let's get started!
 
 #. Syntax Highlighting
 
-   The ``prompt_toolkit.layout`` class is responsible for how the REPL is
-   displayed. This allows us to customize the prompt and choose a lexer for
-   We're going to use the ``SqlLexer`` from the Pygments_ library for
-   highlighting.
+   So far we've been doing really basic stuff, let's step it up a notch by
+   adding syntax highlighting to the user input. We know that users will be
+   entering sql statements, so let's leverage the Pygments_ library for
+   coloring the input.  The ``prompt_toolkit.layout`` class is responsible for
+   how the REPL is displayed. This allows us to customize the prompt and choose
+   a lexer for syntax.  We're going to use the ``SqlLexer`` from the Pygments_
+   library for highlighting.
 
    .. code:: python
 
@@ -87,6 +88,9 @@ Let's get started!
 
 
 #. Auto-completion
+
+    OMG! Syntax highlighting is awesome! You know what's awesomer!?
+    Auto-completion! Let's do that.
    
    Create a class called ``SqlCompleter`` that is derived from
    ``prompt_toolkit.Completer``. Define a set of ``keywords`` for
@@ -133,12 +137,15 @@ Let's get started!
        if __name__ == '__main__':
            main()
 
+
+   That's autocompletion and syntax highlighting in a mere 30 lines of code. 
+
 #. Styling the menus
 
-   To add custom colors to the menus, create a class named ``DocumentStyle``
-   and sub-class it from ``pygments.style``. Customize the colors for the
-   completion menu. Finally pass in the style as a parameter to the
-   ``CommandLineInterface`` constructor.
+   The completion menu is hard to see, so let's add some customization to the
+   menu colors. Create a class named ``DocumentStyle`` and sub-class it from
+   ``pygments.style``. Customize the colors for the completion menu and pass in
+   the style as a parameter to the ``CommandLineInterface`` constructor.
 
    .. code:: python
 
@@ -151,6 +158,7 @@ Let's get started!
        from pygments.lexers.sql import SqlLexer
        from pygments.style import Style
        from pygments.token import Token
+       from pygments.styles.default import DefaultStyle
 
        class SqlCompleter(Completer):
            keywords = ['create', 'select', 'insert', 'drop', 
@@ -186,6 +194,8 @@ Let's get started!
        if __name__ == '__main__':
            main()
 
+   All that's left is hooking up the sqlite backend, which is left as an
+   exercise for the reader. Just kidding... keep reading. 
 
 #. Hook up Sqlite
 
@@ -209,6 +219,7 @@ Let's get started!
        from pygments.lexers.sql import SqlLexer
        from pygments.style import Style
        from pygments.token import Token
+       from pygments.styles.default import DefaultStyle
 
        class SqlCompleter(Completer):
            keywords = ['create', 'select', 'insert', 'drop', 

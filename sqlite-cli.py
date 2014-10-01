@@ -10,6 +10,7 @@ from prompt_toolkit.completion import Completion, Completer
 from pygments.lexers.sql import SqlLexer
 from pygments.style import Style
 from pygments.token import Token
+from pygments.styles.default import DefaultStyle
 
 class SqlCompleter(Completer):
     keywords = ['create', 'select', 'insert', 'drop',
@@ -29,6 +30,7 @@ class DocumentStyle(Style):
         Token.CompletionMenu.ProgressButton: 'bg:#003333',
         Token.CompletionMenu.ProgressBar: 'bg:#00aaaa',
     }
+    styles.update(DefaultStyle.styles)
 
 def main(database):
     connection = sqlite3.connect(database)
