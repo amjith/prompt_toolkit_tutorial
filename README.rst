@@ -26,10 +26,13 @@ Let's get started!
  
        from prompt_toolkit import CommandLineInterface
  
-       def main(): cli = CommandLineInterface() document = cli.read_input()
-       print 'You entered:', document.text
+       def main(): 
+           cli = CommandLineInterface() 
+           document = cli.read_input()
+           print 'You entered:', document.text
  
-       if __name__ == '__main__': main()
+       if __name__ == '__main__': 
+           main()
 
 
 #. Loop The REPL
@@ -137,8 +140,8 @@ Let's get started!
        if __name__ == '__main__':
            main()
 
-
-   That's autocompletion and syntax highlighting in a mere 30 lines of code. 
+   In about 30 lines of code we got ourselves an autocompleting, syntax
+   highlighting REPL. Let's make it better.
 
 #. Styling the menus
 
@@ -263,6 +266,10 @@ Let's get started!
                db = sys.argv[1]
 
            main(db)
+
+  I hope that gives an idea of how to get started on building CLIs.
+
+  The End. 
 
 .. _prompt_toolkit: https://github.com/jonathanslenders/python-prompt-toolkit
 .. _Pygments: http://pygments.org/
