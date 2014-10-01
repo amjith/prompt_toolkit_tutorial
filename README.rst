@@ -34,6 +34,7 @@ Let's get started!
        if __name__ == '__main__': 
            main()
 
+   .. image :: screenshots/1.png
 
 #. Loop The REPL
 
@@ -58,6 +59,7 @@ Let's get started!
        if __name__ == '__main__': 
            main()
    
+   .. image :: screenshots/2.png
 
 #. Syntax Highlighting
 
@@ -89,11 +91,12 @@ Let's get started!
        if __name__ == '__main__':
            main()
 
+   .. image :: screenshots/3.png
 
 #. Auto-completion
 
-    OMG! Syntax highlighting is awesome! You know what's awesomer!?
-    Auto-completion! Let's do that.
+   OMG! Syntax highlighting is awesome! You know what's awesomer!?
+   Auto-completion! Let's do that.
    
    Create a class called ``SqlCompleter`` that is derived from
    ``prompt_toolkit.Completer``. Define a set of ``keywords`` for
@@ -139,6 +142,8 @@ Let's get started!
    
        if __name__ == '__main__':
            main()
+
+   .. image :: screenshots/4.png
 
    In about 30 lines of code we got ourselves an autocompleting, syntax
    highlighting REPL. Let's make it better.
@@ -197,6 +202,8 @@ Let's get started!
    
        if __name__ == '__main__':
            main()
+
+   .. image :: screenshots/5.png
 
    All that's left is hooking up the sqlite backend, which is left as an
    exercise for the reader. Just kidding... keep reading. 
@@ -268,6 +275,8 @@ Let's get started!
                db = sys.argv[1]
 
            main(db)
+
+   .. image :: screenshots/6.png
 
   I hope that gives an idea of how to get started on building CLIs.
 
