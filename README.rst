@@ -278,9 +278,9 @@ Let's get started!
 
    .. image :: screenshots/6.png
 
-  I hope that gives an idea of how to get started on building CLIs.
+I hope that gives an idea of how to get started on building CLIs.
 
-  The End. 
+The End. 
 
 .. _prompt_toolkit: https://github.com/jonathanslenders/python-prompt-toolkit
 .. _Pygments: http://pygments.org/
