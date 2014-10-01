@@ -181,6 +181,7 @@ Let's get started!
                Token.CompletionMenu.ProgressButton: 'bg:#003333',
                Token.CompletionMenu.ProgressBar: 'bg:#00aaaa',
            }
+           styles.update(DefaultStyle)
    
        def main():
            layout = Layout(before_input=DefaultPrompt('> '), 
@@ -242,6 +243,7 @@ Let's get started!
                Token.CompletionMenu.ProgressButton: 'bg:#003333',
                Token.CompletionMenu.ProgressBar: 'bg:#00aaaa',
            }
+           styles.update(DefaultStyle)
    
        def main(database):
            connection = sqlite3.connect(database)
