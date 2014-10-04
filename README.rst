@@ -282,5 +282,14 @@ I hope that gives an idea of how to get started on building CLIs.
 
 The End. 
 
+ps: A lot of people have asked about the terminal prompt in the screenshots.
+Details: 
+
+Shell: 'ohmyzsh' https://github.com/robbyrussell/oh-my-zsh
+
+Theme: "agnoster"  https://gist.github.com/agnoster/3712874
+
+Font: https://github.com/Lokaltog/powerline-fonts
+
 .. _prompt_toolkit: https://github.com/jonathanslenders/python-prompt-toolkit
 .. _Pygments: http://pygments.org/
